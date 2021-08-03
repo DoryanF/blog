@@ -34,20 +34,9 @@ if(!(isset($article_title) && isset($article_description)) || !empty($error_mess
 }
 
 else { // SINON ENVOIT A LA BASE DE DONNES
+    include "../Dao/article_dao.php";
     try { 
-        $dbh = new PDO(
-            "mysql:host=localhost;dbname=ccib;charset=UTF8",
-            "root",
-            "",[
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            ]
-        );
-        $req = $dbh->prepare("INSERT INTO article (titre, descr) 
-                            VALUES (:titre, :descr)");
-        $req->execute([
-            ":titre" => $article_title,
-            ":descr" => $article_description
-        ]);
+        add_article($article_title, $article_description);
     } 
     catch (PDOException $e) {
         echo $e->getMessage();
